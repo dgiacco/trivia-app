@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import Provider from "../../util/Providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,9 @@ export default function RootLayout({
             <h1 className="p-2 text-2xl font-bold text-white md:text-5xl lg:text-7xl">Trivia App</h1>
           </header>
           <div className="w-full flex justify-center">
-            {children}
+            <Provider>
+              {children}
+            </Provider>
           </div>
         </div>
       </body>
