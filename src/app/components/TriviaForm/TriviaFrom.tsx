@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from 'react';
 import { useQuery } from "@tanstack/react-query";
 import { Formik, Form, Field, FormikHelpers } from "formik";
 import * as Yup from "yup";
 
-import { TriviaCategory } from "../interfaces/categories-response";
-import { FormValues } from "../interfaces/initial-values";
+import { TriviaCategory } from "../../interfaces/categories-response";
+import { FormValues } from "../../interfaces/form-values";
+import { difficulties } from "./constants";
 
 const getCategories = async (): Promise<TriviaCategory[]> => {
   const resp = await fetch("https://opentdb.com/api_category.php");
@@ -17,8 +18,7 @@ const getCategories = async (): Promise<TriviaCategory[]> => {
 const initialValues: FormValues = {
   amount: 10,
   category: 9,
-  difficulty: "easy",
-  type: "multiple",
+  difficulty: "easy"
 };
 
 const validationSchema = Yup.object({
@@ -39,8 +39,8 @@ const TriviaForm = () => {
     values: FormValues,
     actions: FormikHelpers<FormValues>
   ) => {
-    const { amount, category, difficulty, type } = values;
-    const apiUrl = `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}&type=${type}`;
+    const { amount, category, difficulty } = values;
+    const apiUrl = `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}&type=multiple`;
     try {
       const resp = await fetch(apiUrl);
       const data = await resp.json();
@@ -50,6 +50,9 @@ const TriviaForm = () => {
     }
   };
 
+  useEffect(() => {
+    console.log(questions)
+  }, [questions])
   return (
     <div>
       <Formik
@@ -98,18 +101,9 @@ const TriviaForm = () => {
               name="difficulty"
               className="text-black"
             >
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-            </Field>
-          </div>
-          <div>
-            <label htmlFor="type" className="pr-4">
-              Select type
-            </label>
-            <Field as="select" id="type" name="type" className="text-black">
-              <option value="multiple">Multiple Choice</option>
-              <option value="boolean">True / False</option>
+              {difficulties.map((dif) => (
+                <option key={dif.value} value={dif.value}>{dif.name}</option>
+              ))}
             </Field>
           </div>
           <button

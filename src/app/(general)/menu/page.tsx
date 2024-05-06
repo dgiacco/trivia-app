@@ -1,5 +1,5 @@
 
-import TriviaFrom from '@/app/components/TriviaFrom'
+import TriviaFrom from '@/app/components/TriviaForm/TriviaFrom'
 
 const TriviaMenu = () => {
   return (
