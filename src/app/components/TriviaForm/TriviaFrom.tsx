@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Formik, Form, Field, FormikHelpers } from "formik";
 import * as Yup from "yup";
@@ -18,7 +18,7 @@ const getCategories = async (): Promise<TriviaCategory[]> => {
 const initialValues: FormValues = {
   amount: 10,
   category: 9,
-  difficulty: "easy"
+  difficulty: "easy",
 };
 
 const validationSchema = Yup.object({
@@ -50,9 +50,9 @@ const TriviaForm = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(questions)
-  }, [questions])
+  const fieldClass =
+    "text-black block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 p-1";
+
   return (
     <div>
       <Formik
@@ -60,27 +60,24 @@ const TriviaForm = () => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        <Form>
+        <Form className="space-y-4">
           <div>
-            <label htmlFor="amount" className="pr-4">
-              Number of questions
-            </label>
+
+            <label htmlFor="amount">Number of questions</label>
             <Field
               type="number"
               id="amount"
               name="amount"
-              className="text-black"
+              className={fieldClass}
             ></Field>
           </div>
           <div>
-            <label htmlFor="category" className="pr-4">
-              Choose a category
-            </label>
+            <label htmlFor="category">Choose a category</label>
             <Field
               as="select"
               id="category"
               name="category"
-              className="text-black"
+              className={fieldClass}
             >
               {formData?.map((category) => {
                 return (
@@ -92,26 +89,28 @@ const TriviaForm = () => {
             </Field>
           </div>
           <div>
-            <label htmlFor="difficulty" className="pr-4">
-              Select difficulty
-            </label>
+            <label htmlFor="difficulty">Select difficulty</label>
             <Field
               as="select"
               id="difficulty"
               name="difficulty"
-              className="text-black"
+              className={fieldClass}
             >
               {difficulties.map((dif) => (
-                <option key={dif.value} value={dif.value}>{dif.name}</option>
+                <option key={dif.value} value={dif.value}>
+                  {dif.name}
+                </option>
               ))}
             </Field>
           </div>
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded"
-          >
-            Start!
-          </button>
+          <div className="pt-4">
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded"
+            >
+              Start!
+            </button>
+          </div>
         </Form>
       </Formik>
     </div>
