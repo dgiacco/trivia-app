@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, FormEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Formik, Form, Field, FormikHelpers } from "formik";
 import * as Yup from "yup";
 
 import { TriviaCategory } from "../../interfaces/categories-response";
 import { FormValues } from "../../interfaces/form-values";
 import { difficulties } from "./constants";
+import { useRouter } from "next/navigation";
 
 const getCategories = async (): Promise<TriviaCategory[]> => {
   const resp = await fetch("https://opentdb.com/api_category.php");
@@ -28,91 +28,100 @@ const validationSchema = Yup.object({
     .max(50, "Maximum 50 questions"),
 });
 
+const fieldClass =
+  "text-black block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 p-1";
+
 const TriviaForm = () => {
-  const [questions, setQuestions] = useState([]);
+  const [enableQuery, setEnableQuery] = useState(false);
+  const questionsNumber = useRef<HTMLInputElement>(null);
+  const selectedCategory = useRef<HTMLSelectElement>(null);
+  const selectedDifficulty = useRef<HTMLSelectElement>(null);
   const { data: formData, error: fetchError } = useQuery({
     queryKey: ["category"],
     queryFn: getCategories,
   });
 
-  const handleSubmit = async (
-    values: FormValues,
-    actions: FormikHelpers<FormValues>
-  ) => {
-    const { amount, category, difficulty } = values;
+  const getQuestions = async () => {
+    const amount = questionsNumber.current?.value;
+    const category = selectedCategory.current?.value;
+    const difficulty = selectedDifficulty.current?.value;
     const apiUrl = `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}&type=multiple`;
     try {
       const resp = await fetch(apiUrl);
-      const data = await resp.json();
-      setQuestions(data.results);
+      return await resp.json();
     } catch (err) {
       console.error(err);
     }
   };
 
-  const fieldClass =
-    "text-black block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 p-1";
+  const { data: questions } = useQuery({
+    queryKey: ["questions"],
+    queryFn: getQuestions,
+    enabled: enableQuery,
+  });
+
+  const router = useRouter();
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setEnableQuery(true);
+    router.push("/questions");
+  };
 
   return (
     <div>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        <Form className="space-y-4">
-          <div>
-
-            <label htmlFor="amount">Number of questions</label>
-            <Field
-              type="number"
-              id="amount"
-              name="amount"
-              className={fieldClass}
-            ></Field>
-          </div>
-          <div>
-            <label htmlFor="category">Choose a category</label>
-            <Field
-              as="select"
-              id="category"
-              name="category"
-              className={fieldClass}
-            >
-              {formData?.map((category) => {
-                return (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                );
-              })}
-            </Field>
-          </div>
-          <div>
-            <label htmlFor="difficulty">Select difficulty</label>
-            <Field
-              as="select"
-              id="difficulty"
-              name="difficulty"
-              className={fieldClass}
-            >
-              {difficulties.map((dif) => (
-                <option key={dif.value} value={dif.value}>
-                  {dif.name}
+      <form className="space-y-4" onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="amount">Number of questions</label>
+          <input
+            type="number"
+            id="amount"
+            name="amount"
+            ref={questionsNumber}
+            className={fieldClass}
+          ></input>
+        </div>
+        <div>
+          <label htmlFor="category">Choose a category</label>
+          <select
+            id="category"
+            name="category"
+            ref={selectedCategory}
+            className={fieldClass}
+          >
+            {formData?.map((category) => {
+              return (
+                <option key={category.id} value={category.id}>
+                  {category.name}
                 </option>
-              ))}
-            </Field>
-          </div>
-          <div className="pt-4">
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded"
-            >
-              Start!
-            </button>
-          </div>
-        </Form>
-      </Formik>
+              );
+            })}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="difficulty">Select difficulty</label>
+          <select
+            id="difficulty"
+            name="difficulty"
+            ref={selectedDifficulty}
+            className={fieldClass}
+          >
+            {difficulties.map((dif) => (
+              <option key={dif.value} value={dif.value}>
+                {dif.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="pt-4">
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded"
+          >
+            Start!
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
