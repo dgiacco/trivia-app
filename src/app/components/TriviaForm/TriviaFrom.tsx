@@ -65,7 +65,7 @@ const TriviaForm = () => {
             type="number"
             id="amount"
             name="amount"
-            ref={questionsNumber}
+            defaultValue={10}
             className={fieldClass}
           ></input>
         </div>
@@ -74,7 +74,6 @@ const TriviaForm = () => {
           <select
             id="category"
             name="category"
-            ref={selectedCategory}
             className={fieldClass}
           >
             {formData?.map((category) => {
@@ -91,7 +90,6 @@ const TriviaForm = () => {
           <select
             id="difficulty"
             name="difficulty"
-            ref={selectedDifficulty}
             className={fieldClass}
           >
             {difficulties.map((dif) => (
