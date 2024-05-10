@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import Provider from "../../util/Providers";
+import { GlobalContextProvider } from "./context/TriviaContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,11 +21,13 @@ export default function RootLayout({
       <body className="min-h-screen flex justify-center bg-slate-900">
         <div className="w-4/5">
           <header className="w-full text-center p-4">
-            <h1 className="p-2 text-2xl font-bold text-white md:text-5xl lg:text-7xl">Trivia App</h1>
+            <h1 className="p-2 text-2xl font-bold text-white md:text-5xl lg:text-7xl">
+              Trivia App
+            </h1>
           </header>
           <div className="w-full flex justify-center">
             <Provider>
-              {children}
+              <GlobalContextProvider>{children}</GlobalContextProvider>
             </Provider>
           </div>
         </div>

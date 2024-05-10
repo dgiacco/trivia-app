@@ -1,13 +1,15 @@
 "use client";
 
-import { useState, useEffect, useRef, FormEvent } from "react";
+import { useRef, FormEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 
 import { TriviaCategory } from "../../interfaces/categories-response";
 import { FormValues } from "../../interfaces/form-values";
 import { difficulties } from "./constants";
-import { useRouter } from "next/navigation";
+import { useGlobalContext } from "@/app/context/TriviaContext";
+import { TriviaParams } from "@/app/interfaces/context-params";
 
 const getCategories = async (): Promise<TriviaCategory[]> => {
   const resp = await fetch("https://opentdb.com/api_category.php");
@@ -32,7 +34,6 @@ const fieldClass =
   "text-black block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 p-1";
 
 const TriviaForm = () => {
-  const [enableQuery, setEnableQuery] = useState(false);
   const questionsNumber = useRef<HTMLInputElement>(null);
   const selectedCategory = useRef<HTMLSelectElement>(null);
   const selectedDifficulty = useRef<HTMLSelectElement>(null);
@@ -41,30 +42,17 @@ const TriviaForm = () => {
     queryFn: getCategories,
   });
 
-  const getQuestions = async () => {
-    const amount = questionsNumber.current?.value;
-    const category = selectedCategory.current?.value;
-    const difficulty = selectedDifficulty.current?.value;
-    const apiUrl = `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}&type=multiple`;
-    try {
-      const resp = await fetch(apiUrl);
-      return await resp.json();
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const { data: questions } = useQuery({
-    queryKey: ["questions"],
-    queryFn: getQuestions,
-    enabled: enableQuery,
-  });
+  const { setTriviaParams } = useGlobalContext();
 
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setEnableQuery(true);
+    const amount = Number(questionsNumber.current?.value) || 10;
+    const category = Number(selectedCategory.current?.value) || 9;
+    const difficulty = selectedDifficulty.current?.value || "easy";
+    const questionsParams: TriviaParams = [amount, category, difficulty];
+    setTriviaParams(questionsParams);
     router.push("/questions");
   };
 
