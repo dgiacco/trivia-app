@@ -9,15 +9,13 @@ import { TriviaCategory } from "../../interfaces/categories-response";
 import { difficulties } from "./constants";
 import { useGlobalContext } from "@/app/context/TriviaContext";
 import { TriviaParams } from "@/app/interfaces/context-params";
+import { formButtonClass, formFieldClass, formLabelClass } from "@/app/styles/form-styles";
 
 const getCategories = async (): Promise<TriviaCategory[]> => {
   const resp = await fetch("https://opentdb.com/api_category.php");
   const data = await resp.json();
   return data.trivia_categories;
 };
-
-const fieldClass =
-  "text-black block w-full rounded-md border-2 border-gray-300 shadow-sm  focus:ring focus:ring-blue-500 focus:ring-opacity-50 p-1";
 
 const TriviaForm = () => {
   const questionsNumber = useRef<HTMLInputElement>(null);
@@ -58,18 +56,22 @@ const TriviaForm = () => {
     <div>
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="amount">Number of questions</label>
+          <label htmlFor="amount" className={formLabelClass}>
+            Number of questions
+          </label>
           <input
             type="number"
             id="amount"
             name="amount"
             defaultValue={10}
-            className={fieldClass}
+            className={formFieldClass}
           ></input>
         </div>
         <div>
-          <label htmlFor="category">Choose a category</label>
-          <select id="category" name="category" className={fieldClass}>
+          <label htmlFor="category" className={formLabelClass}>
+            Choose a category
+          </label>
+          <select id="category" name="category" className={formFieldClass}>
             {formData?.map((category) => {
               return (
                 <option key={category.id} value={category.id}>
@@ -80,8 +82,10 @@ const TriviaForm = () => {
           </select>
         </div>
         <div>
-          <label htmlFor="difficulty">Select difficulty</label>
-          <select id="difficulty" name="difficulty" className={fieldClass}>
+          <label htmlFor="difficulty" className={formLabelClass}>
+            Select difficulty
+          </label>
+          <select id="difficulty" name="difficulty" className={formFieldClass}>
             {difficulties.map((dif) => (
               <option key={dif.value} value={dif.value}>
                 {dif.name}
@@ -92,7 +96,7 @@ const TriviaForm = () => {
         <div className="pt-4">
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded"
+            className={formButtonClass}
           >
             Start!
           </button>
