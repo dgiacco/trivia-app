@@ -18,10 +18,10 @@ export default function RootLayout({
 }>) {
   return (
     <html>
-      <body className="min-h-screen flex justify-center bg-slate-900">
+      <body className="min-h-screen flex justify-center bg-slate-800">
         <div className="w-4/5">
           <header className="w-full text-center p-4">
-            <h1 className="p-2 text-2xl font-bold text-white md:text-5xl lg:text-7xl">
+            <h1 className="p-2 text-3xl font-bold text-white md:text-5xl lg:text-7xl">
               Trivia App
             </h1>
           </header>

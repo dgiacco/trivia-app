@@ -3,6 +3,7 @@
 import { useRef, FormEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { MoonLoader } from "react-spinners";
 
 import { TriviaCategory } from "../../interfaces/categories-response";
 import { difficulties } from "./constants";
@@ -16,13 +17,17 @@ const getCategories = async (): Promise<TriviaCategory[]> => {
 };
 
 const fieldClass =
-  "text-black block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 p-1";
+  "text-black block w-full rounded-md border-2 border-gray-300 shadow-sm  focus:ring focus:ring-blue-500 focus:ring-opacity-50 p-1";
 
 const TriviaForm = () => {
   const questionsNumber = useRef<HTMLInputElement>(null);
   const selectedCategory = useRef<HTMLSelectElement>(null);
   const selectedDifficulty = useRef<HTMLSelectElement>(null);
-  const { data: formData, error: fetchError } = useQuery({
+  const {
+    data: formData,
+    isLoading,
+    error: fetchError,
+  } = useQuery({
     queryKey: ["category"],
     queryFn: getCategories,
   });
@@ -41,6 +46,14 @@ const TriviaForm = () => {
     router.push("/questions");
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center h-screen">
+        <MoonLoader color="#36D7B7" size={50} />
+      </div>
+    );
+  }
+
   return (
     <div>
       <form className="space-y-4" onSubmit={handleSubmit}>
@@ -56,11 +69,7 @@ const TriviaForm = () => {
         </div>
         <div>
           <label htmlFor="category">Choose a category</label>
-          <select
-            id="category"
-            name="category"
-            className={fieldClass}
-          >
+          <select id="category" name="category" className={fieldClass}>
             {formData?.map((category) => {
               return (
                 <option key={category.id} value={category.id}>
@@ -72,11 +81,7 @@ const TriviaForm = () => {
         </div>
         <div>
           <label htmlFor="difficulty">Select difficulty</label>
-          <select
-            id="difficulty"
-            name="difficulty"
-            className={fieldClass}
-          >
+          <select id="difficulty" name="difficulty" className={fieldClass}>
             {difficulties.map((dif) => (
               <option key={dif.value} value={dif.value}>
                 {dif.name}
