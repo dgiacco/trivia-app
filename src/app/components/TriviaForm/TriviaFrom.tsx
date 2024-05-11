@@ -3,10 +3,8 @@
 import { useRef, FormEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import * as Yup from "yup";
 
 import { TriviaCategory } from "../../interfaces/categories-response";
-import { FormValues } from "../../interfaces/form-values";
 import { difficulties } from "./constants";
 import { useGlobalContext } from "@/app/context/TriviaContext";
 import { TriviaParams } from "@/app/interfaces/context-params";
@@ -16,19 +14,6 @@ const getCategories = async (): Promise<TriviaCategory[]> => {
   const data = await resp.json();
   return data.trivia_categories;
 };
-
-const initialValues: FormValues = {
-  amount: 10,
-  category: 9,
-  difficulty: "easy",
-};
-
-const validationSchema = Yup.object({
-  amount: Yup.number()
-    .required("Required")
-    .min(1, "Minimum 1 question")
-    .max(50, "Maximum 50 questions"),
-});
 
 const fieldClass =
   "text-black block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 p-1";
