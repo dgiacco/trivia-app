@@ -22,11 +22,19 @@ const QuestionsPage = () => {
     return <Loader />;
   }
 
+  function removeCharacters(question: string) {
+    return question
+      .replace(/&quot;/g, '"')
+      .replace(/&rsquo;/g, "’")
+      .replace(/&#039;/g, "'")
+      .replace(/&amp;/g, "&");
+  }
+
   return (
     <div className="text-white">
       QuestionsPage
       {questions?.map((question) => (
-        <p key={question.question}>{question.question}</p>
+        <p key={question.question}>{removeCharacters(question.question)}</p>
       ))}
     </div>
   );
