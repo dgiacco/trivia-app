@@ -3,13 +3,17 @@
 import { useRef, FormEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { MoonLoader } from "react-spinners";
 
 import { TriviaCategory } from "../../interfaces/categories-response";
 import { difficulties } from "./constants";
 import { useGlobalContext } from "@/app/context/TriviaContext";
 import { TriviaParams } from "@/app/interfaces/context-params";
-import { formButtonClass, formFieldClass, formLabelClass } from "@/app/styles/form-styles";
+import {
+  formButtonClass,
+  formFieldClass,
+  formLabelClass,
+} from "@/app/styles/form-styles";
+import Loader from "../common/Loader";
 
 const getCategories = async (): Promise<TriviaCategory[]> => {
   const resp = await fetch("https://opentdb.com/api_category.php");
@@ -45,11 +49,7 @@ const TriviaForm = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center h-screen">
-        <MoonLoader color="#36D7B7" size={50} />
-      </div>
-    );
+    return <Loader />;
   }
 
   return (
@@ -63,6 +63,7 @@ const TriviaForm = () => {
             type="number"
             id="amount"
             name="amount"
+            ref={questionsNumber}
             defaultValue={10}
             className={formFieldClass}
           ></input>
@@ -71,7 +72,12 @@ const TriviaForm = () => {
           <label htmlFor="category" className={formLabelClass}>
             Choose a category
           </label>
-          <select id="category" name="category" className={formFieldClass}>
+          <select
+            id="category"
+            name="category"
+            ref={selectedCategory}
+            className={formFieldClass}
+          >
             {formData?.map((category) => {
               return (
                 <option key={category.id} value={category.id}>
@@ -85,7 +91,12 @@ const TriviaForm = () => {
           <label htmlFor="difficulty" className={formLabelClass}>
             Select difficulty
           </label>
-          <select id="difficulty" name="difficulty" className={formFieldClass}>
+          <select
+            id="difficulty"
+            name="difficulty"
+            ref={selectedDifficulty}
+            className={formFieldClass}
+          >
             {difficulties.map((dif) => (
               <option key={dif.value} value={dif.value}>
                 {dif.name}
@@ -94,10 +105,7 @@ const TriviaForm = () => {
           </select>
         </div>
         <div className="pt-4">
-          <button
-            type="submit"
-            className={formButtonClass}
-          >
+          <button type="submit" className={formButtonClass}>
             Start!
           </button>
         </div>
