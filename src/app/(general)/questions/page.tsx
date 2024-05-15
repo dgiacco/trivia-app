@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useGlobalContext } from "@/app/context/TriviaContext";
 import { getQuestions } from "@/app/fetchers/questions";
 import Loader from "../../components/common/Loader";
+import { questionClass } from "@/app/styles/questions-styles";
 
 const QuestionsPage = () => {
   const { triviaParams } = useGlobalContext();
@@ -27,16 +28,21 @@ const QuestionsPage = () => {
       .replace(/&quot;/g, '"')
       .replace(/&rsquo;/g, "’")
       .replace(/&#039;/g, "'")
-      .replace(/&amp;/g, "&");
+      .replace(/&amp;/g, "&")
+      .replace(/&shy;/g, "-\n")
+      .replace(/&ldquo;/g, "“")
+      .replace(/&hellip;/g, "…")
+      .replace(/&rdquo;/g, "”");
   }
 
   return (
-    <div className="text-white">
-      QuestionsPage
-      {questions?.map((question) => (
-        <p key={question.question}>{removeCharacters(question.question)}</p>
-      ))}
-    </div>
+    <>
+      <div className={questionClass}>
+        {questions?.map((question) => (
+          <h3 key={question.question}>{removeCharacters(question.question)}</h3>
+        ))}
+      </div>
+    </>
   );
 };
 
