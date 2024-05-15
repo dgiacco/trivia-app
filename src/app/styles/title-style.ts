@@ -1,2 +1,2 @@
 export const titleClass =
-  "font-serif text-5xl pt-2 pb-8 md:text-8xl lg:text-9xl lg:pt-4 lg:pb-16 font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-teal-500"
+  "font-serif text-5xl pt-2 pb-8 sm:text-7xl md:text-8xl lg:text-9xl lg:pt-4 lg:pb-16 font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-teal-500"

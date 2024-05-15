@@ -41,13 +41,7 @@ const QuestionsPage = () => {
   if(questions?.length === 0) {
     return (
       <div>
-      {/* Render your questions here */}
-      
-      <QuestionsModal>
-        {/* Modal content */}
-        <h1 className="text-lg font-bold mb-4">No Questions Available</h1>
-        <p className="text-gray-700">There are no questions available.</p>
-      </QuestionsModal>
+      <QuestionsModal />
     </div>
     )
   }
