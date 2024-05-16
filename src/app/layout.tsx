@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local"
 
 import Provider from "../../util/Providers";
 import { GlobalContextProvider } from "./context/TriviaContext";
 import { titleClass } from "./styles/title-style";
 
-const inter = Inter({ subsets: ["latin"] });
+const poetsenone = localFont({ src: "../font/PoetsenOne-Regular.ttf", variable: "--poetsen-one" });
 
 export const metadata: Metadata = {
   title: "Trivia App",
@@ -18,9 +18,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const bodyClass = `${poetsenone.variable} min-h-screen flex justify-center bg-slate-800`
+
   return (
     <html>
-      <body className="min-h-screen flex justify-center bg-slate-800">
+      <body className={bodyClass}>
         <div className="w-4/5">
           <header className="w-full text-center p-4">
             <h1 className={titleClass}>
