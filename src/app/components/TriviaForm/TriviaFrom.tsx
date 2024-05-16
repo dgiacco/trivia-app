@@ -9,11 +9,11 @@ import { difficulties } from "./constants";
 import { useGlobalContext } from "@/app/context/TriviaContext";
 import { TriviaParams } from "@/app/interfaces/context-params";
 import {
-  formButtonClass,
   formFieldClass,
   formLabelClass,
 } from "@/app/styles/form-styles";
 import Loader from "../common/Loader";
+import Button from "@/app/components/common/Button";
 
 const getCategories = async (): Promise<TriviaCategory[]> => {
   const resp = await fetch("https://opentdb.com/api_category.php");
@@ -105,9 +105,7 @@ const TriviaForm = () => {
           </select>
         </div>
         <div className="pt-4">
-          <button type="submit" className={formButtonClass}>
-            Start!
-          </button>
+          <Button type="submit">Start!</Button>
         </div>
       </form>
     </div>

@@ -8,7 +8,7 @@ import { getQuestions } from "@/app/fetchers/questions";
 import Loader from "../../components/common/Loader";
 import { questionClass } from "@/app/styles/questions-styles";
 import QuestionsModal from "../../components/Questions/QuestionsModal";
-import { formButtonClass } from '../../styles/form-styles';
+import Button from "@/app/components/common/Button";
 
 const QuestionsPage = () => {
   const { triviaParams } = useGlobalContext();
@@ -61,7 +61,7 @@ const QuestionsPage = () => {
         </div>
       </div>
       <div className="text-center">
-        <button className={formButtonClass} onClick={moveToNextQuestion}>Next question</button>
+        <Button onClick={moveToNextQuestion}>Next question</Button>
       </div>
     </div>
   );
