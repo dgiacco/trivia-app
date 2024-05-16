@@ -9,6 +9,8 @@ import Loader from "../../components/common/Loader";
 import { questionClass } from "@/app/styles/questions-styles";
 import QuestionsModal from "../../components/Questions/QuestionsModal";
 import Button from "@/app/components/common/Button";
+import AnswerContainer from "@/app/components/Questions/AnswerContainer";
+import { removeCharacters } from "../../../../util/FormatText";
 
 const shuffleArray = (array: any[]) => {
   for (let i = array.length - 1; i > 0; i--) {
@@ -39,18 +41,6 @@ const QuestionsPage = () => {
     return <Loader />;
   }
 
-  function removeCharacters(question: string) {
-    return question
-      .replace(/&quot;/g, '"')
-      .replace(/&rsquo;/g, "’")
-      .replace(/&#039;/g, "'")
-      .replace(/&amp;/g, "&")
-      .replace(/&shy;/g, "-\n")
-      .replace(/&ldquo;/g, "“")
-      .replace(/&hellip;/g, "…")
-      .replace(/&rdquo;/g, "”");
-  }
-
   if (questions === undefined || questions.length === 0) {
     return (
       <div>
@@ -60,7 +50,10 @@ const QuestionsPage = () => {
   }
 
   const currentQuestion = questions[currentQuestionIndex];
-  const currentAnswers = shuffleArray([...questions[currentQuestionIndex].incorrect_answers,  questions[currentQuestionIndex].correct_answer]);
+  const currentAnswers = shuffleArray([
+    ...questions[currentQuestionIndex].incorrect_answers,
+    questions[currentQuestionIndex].correct_answer,
+  ]);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -69,11 +62,11 @@ const QuestionsPage = () => {
           {removeCharacters(currentQuestion.question)}
         </div>
       </div>
-      <div className={questionClass}>
-        <div key={currentQuestion.question}>
-          {
-            currentAnswers.map(answer => <div key={answer}>{answer}</div>)
-          }
+      <div className="mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {currentAnswers.map((answer) => (
+            <AnswerContainer answer={answer} />
+          ))}
         </div>
       </div>
       <div className="text-center">
