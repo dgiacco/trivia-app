@@ -10,6 +10,14 @@ import { questionClass } from "@/app/styles/questions-styles";
 import QuestionsModal from "../../components/Questions/QuestionsModal";
 import Button from "@/app/components/common/Button";
 
+const shuffleArray = (array: any[]) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
+
 const QuestionsPage = () => {
   const { triviaParams } = useGlobalContext();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -52,12 +60,20 @@ const QuestionsPage = () => {
   }
 
   const currentQuestion = questions[currentQuestionIndex];
+  const currentAnswers = shuffleArray([...questions[currentQuestionIndex].incorrect_answers,  questions[currentQuestionIndex].correct_answer]);
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className={questionClass}>
         <div key={currentQuestion.question}>
           {removeCharacters(currentQuestion.question)}
+        </div>
+      </div>
+      <div className={questionClass}>
+        <div key={currentQuestion.question}>
+          {
+            currentAnswers.map(answer => <div key={answer}>{answer}</div>)
+          }
         </div>
       </div>
       <div className="text-center">
