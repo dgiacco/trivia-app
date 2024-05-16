@@ -9,7 +9,7 @@ import { titleClass } from "./styles/title-style";
 const poetsenone = localFont({ src: "../font/PoetsenOne-Regular.ttf", variable: "--poetsen-one" });
 
 export const metadata: Metadata = {
-  title: "Trivia App",
+  title: "TriviangA",
   description: "Created by Damian",
 };
 

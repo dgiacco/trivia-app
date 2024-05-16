@@ -104,7 +104,7 @@ const TriviaForm = () => {
             ))}
           </select>
         </div>
-        <div className="pt-4">
+        <div className="pt-4 text-right">
           <Button type="submit">Start!</Button>
         </div>
       </form>
