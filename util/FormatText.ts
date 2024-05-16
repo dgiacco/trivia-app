@@ -9,4 +9,5 @@ export function removeCharacters(question: string) {
     .replace(/&hellip;/g, "…")
     .replace(/&rdquo;/g, "”")
     .replace(/&Eacute;/g, "É")
+    .replace(/&iacute;/g, "í")
 }
