@@ -42,6 +42,7 @@ const QuestionsPage = () => {
         questions[currentQuestionIndex].correct_answer,
       ]);
       setCurrentAnswers(shuffledAnswers);
+      setSelectedAnswer(null)
     }
   }, [questions, currentQuestionIndex]);
 
@@ -60,12 +61,10 @@ const QuestionsPage = () => {
   const currentQuestion = questions[currentQuestionIndex];
 
   const handleAnswer = (answer: string) => {
-    console.log(answer);
     setSelectedAnswer(answer);
   };
 
   const moveToNextQuestion = () => {
-    console.log("estado", selectedAnswer);
     setCurrentQuestionIndex((currentQuestionIndex) => currentQuestionIndex + 1);
   };
 
@@ -83,12 +82,13 @@ const QuestionsPage = () => {
               key={answer}
               answer={answer}
               onClick={handleAnswer}
+              selected={selectedAnswer === answer}
             />
           ))}
         </div>
       </div>
       <div className="text-center">
-        <Button onClick={moveToNextQuestion}>Next question</Button>
+        <Button onClick={moveToNextQuestion} disabled={selectedAnswer === null}>Next question</Button>
       </div>
     </div>
   );
