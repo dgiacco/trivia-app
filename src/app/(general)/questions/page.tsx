@@ -1,7 +1,6 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useState } from 'react';
 
 import { useGlobalContext } from "@/app/context/TriviaContext";
 import { getQuestions } from "@/app/fetchers/questions";
@@ -10,7 +9,6 @@ import { questionClass } from "@/app/styles/questions-styles";
 import QuestionsModal from "../../components/Questions/QuestionsModal"
 
 const QuestionsPage = () => {
-  const [showModal, setShowModal] = useState(false);
   const { triviaParams } = useGlobalContext();
 
   const amount = triviaParams[0];
