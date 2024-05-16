@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useGlobalContext } from "@/app/context/TriviaContext";
 import { getQuestions } from "@/app/fetchers/questions";
@@ -23,6 +23,8 @@ const shuffleArray = (array: any[]) => {
 const QuestionsPage = () => {
   const { triviaParams } = useGlobalContext();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [currentAnswers, setCurrentAnswers] = useState<string[]>([]);
 
   const amount = triviaParams[0];
   const category = triviaParams[1];
@@ -33,9 +35,15 @@ const QuestionsPage = () => {
     queryFn: () => getQuestions({ amount, category, difficulty }),
   });
 
-  const moveToNextQuestion = () => {
-    setCurrentQuestionIndex((currentQuestionIndex) => currentQuestionIndex + 1);
-  };
+  useEffect(() => {
+    if (questions && questions.length > 0) {
+      const shuffledAnswers = shuffleArray([
+        ...questions[currentQuestionIndex].incorrect_answers,
+        questions[currentQuestionIndex].correct_answer,
+      ]);
+      setCurrentAnswers(shuffledAnswers);
+    }
+  }, [questions, currentQuestionIndex]);
 
   if (isLoading) {
     return <Loader />;
@@ -50,10 +58,16 @@ const QuestionsPage = () => {
   }
 
   const currentQuestion = questions[currentQuestionIndex];
-  const currentAnswers = shuffleArray([
-    ...questions[currentQuestionIndex].incorrect_answers,
-    questions[currentQuestionIndex].correct_answer,
-  ]);
+
+  const handleAnswer = (answer: string) => {
+    console.log(answer);
+    setSelectedAnswer(answer);
+  };
+
+  const moveToNextQuestion = () => {
+    console.log("estado", selectedAnswer);
+    setCurrentQuestionIndex((currentQuestionIndex) => currentQuestionIndex + 1);
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -65,7 +79,11 @@ const QuestionsPage = () => {
       <div className="mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {currentAnswers.map((answer) => (
-            <AnswerContainer answer={answer} />
+            <AnswerContainer
+              key={answer}
+              answer={answer}
+              onClick={handleAnswer}
+            />
           ))}
         </div>
       </div>

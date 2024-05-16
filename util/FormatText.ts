@@ -7,5 +7,6 @@ export function removeCharacters(question: string) {
     .replace(/&shy;/g, "-\n")
     .replace(/&ldquo;/g, "“")
     .replace(/&hellip;/g, "…")
-    .replace(/&rdquo;/g, "”");
+    .replace(/&rdquo;/g, "”")
+    .replace(/&Eacute;/g, "É")
 }
