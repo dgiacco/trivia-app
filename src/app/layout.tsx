@@ -24,7 +24,7 @@ export default function RootLayout({
         <div className="w-4/5">
           <header className="w-full text-center p-4">
             <h1 className={titleClass}>
-              Trivia App
+              TriviangA
             </h1>
           </header>
           <div className="w-full flex justify-center">
