@@ -1,15 +1,18 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 import { useGlobalContext } from "@/app/context/TriviaContext";
 import { getQuestions } from "@/app/fetchers/questions";
 import Loader from "../../components/common/Loader";
 import { questionClass } from "@/app/styles/questions-styles";
-import QuestionsModal from "../../components/Questions/QuestionsModal"
+import QuestionsModal from "../../components/Questions/QuestionsModal";
+import { formButtonClass } from '../../styles/form-styles';
 
 const QuestionsPage = () => {
   const { triviaParams } = useGlobalContext();
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   const amount = triviaParams[0];
   const category = triviaParams[1];
@@ -19,6 +22,10 @@ const QuestionsPage = () => {
     queryKey: ["questions"],
     queryFn: () => getQuestions({ amount, category, difficulty }),
   });
+
+  const moveToNextQuestion = () => {
+    setCurrentQuestionIndex((currentQuestionIndex) => currentQuestionIndex + 1);
+  };
 
   if (isLoading) {
     return <Loader />;
@@ -36,21 +43,27 @@ const QuestionsPage = () => {
       .replace(/&rdquo;/g, "”");
   }
 
-  if(questions?.length === 0) {
+  if (questions === undefined || questions.length === 0) {
     return (
       <div>
-      <QuestionsModal />
-    </div>
-    )
-  }
-  return (
-    <>
-      <div className={questionClass}>
-        {questions?.map((question) => (
-          <h3 key={question.question}>{removeCharacters(question.question)}</h3>
-        ))}
+        <QuestionsModal />
       </div>
-    </>
+    );
+  }
+
+  const currentQuestion = questions[currentQuestionIndex];
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className={questionClass}>
+        <div key={currentQuestion.question}>
+          {removeCharacters(currentQuestion.question)}
+        </div>
+      </div>
+      <div className="text-center">
+        <button className={formButtonClass} onClick={moveToNextQuestion}>Next question</button>
+      </div>
+    </div>
   );
 };
 
