@@ -55,7 +55,7 @@ const QuestionsPage = () => {
   if (questions === undefined || questions.length === 0) {
     return (
       <div>
-        <Modal />
+        <Modal  isFinalResult={false}/>
       </div>
     );
   }
@@ -121,7 +121,7 @@ const QuestionsPage = () => {
         )}
       </div>
       { showModal && (
-        <Modal count={counter}/>
+        <Modal isFinalResult={true} count={counter} totalQuestions={questions.length}/>
       )}
     </div>
   );
