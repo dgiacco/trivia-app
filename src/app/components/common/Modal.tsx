@@ -65,7 +65,7 @@ const Modal = ({ isFinalResult, count, totalQuestions }: ModalProps) => {
             )}
           </div>
           <div className="p-4 md:p-6 flex justify-end">
-            <Button onClick={goToMenu}>Go Back!</Button>
+            <Button onClick={goToMenu}>{isFinalResult ? "Play again!" : "Go back!"}</Button>
           </div>
         </div>
       </div>
