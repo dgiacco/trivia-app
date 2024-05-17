@@ -7,7 +7,7 @@ import { useGlobalContext } from "@/app/context/TriviaContext";
 import { getQuestions } from "@/app/fetchers/questions";
 import Loader from "../../components/common/Loader";
 import { questionClass } from "@/app/styles/questions-styles";
-import QuestionsModal from "../../components/Questions/QuestionsModal";
+import Modal from "../../components/common/Modal";
 import Button from "@/app/components/common/Button";
 import AnswerContainer from "@/app/components/Questions/AnswerContainer";
 import { removeCharacters } from "../../../../util/FormatText";
@@ -26,6 +26,7 @@ const QuestionsPage = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [currentAnswers, setCurrentAnswers] = useState<string[]>([]);
   const [counter, setCounter] = useState(0);
+  const [showModal, setShowModal] = useState(false);
 
   const amount = triviaParams[0];
   const category = triviaParams[1];
@@ -54,7 +55,7 @@ const QuestionsPage = () => {
   if (questions === undefined || questions.length === 0) {
     return (
       <div>
-        <QuestionsModal />
+        <Modal />
       </div>
     );
   }
@@ -68,14 +69,22 @@ const QuestionsPage = () => {
   const moveToNextQuestion = () => {
     if (selectedAnswer === questions[currentQuestionIndex].correct_answer) {
       setCounter(counter + 1);
+      console.log('correct')
     }
     setCurrentQuestionIndex((currentQuestionIndex) => currentQuestionIndex + 1);
   };
 
+  const finishGame = () => {
+    if (selectedAnswer === questions[currentQuestionIndex].correct_answer) {
+      setCounter(counter + 1);
+      console.log('correct')
+    }
+    setShowModal(true)
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-white">
-        {questions.length} - {currentQuestionIndex + 1}
       </h1>
       <div className={questionClass}>
         <div key={currentQuestion.question}>
@@ -104,13 +113,16 @@ const QuestionsPage = () => {
           </Button>
         ) : (
           <Button
-            onClick={() => console.log('termino')}
+            onClick={finishGame}
             disabled={selectedAnswer === null}
           >
             Finish!
           </Button>
         )}
       </div>
+      { showModal && (
+        <Modal count={counter}/>
+      )}
     </div>
   );
 };
