@@ -67,7 +67,6 @@ const QuestionsPage = () => {
 
   const moveToNextQuestion = () => {
     if (selectedAnswer === questions[currentQuestionIndex].correct_answer) {
-      console.log("CORRECT");
       setCounter(counter + 1);
     }
     setCurrentQuestionIndex((currentQuestionIndex) => currentQuestionIndex + 1);
@@ -75,7 +74,9 @@ const QuestionsPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-white">hola{counter}</h1>
+      <h1 className="text-white">
+        {questions.length} - {currentQuestionIndex + 1}
+      </h1>
       <div className={questionClass}>
         <div key={currentQuestion.question}>
           {removeCharacters(currentQuestion.question)}
@@ -94,9 +95,21 @@ const QuestionsPage = () => {
         </div>
       </div>
       <div className="text-center">
-        <Button onClick={moveToNextQuestion} disabled={selectedAnswer === null}>
-          Next question
-        </Button>
+        {questions.length > currentQuestionIndex + 1 ? (
+          <Button
+            onClick={moveToNextQuestion}
+            disabled={selectedAnswer === null}
+          >
+            Next Question
+          </Button>
+        ) : (
+          <Button
+            onClick={() => console.log('termino')}
+            disabled={selectedAnswer === null}
+          >
+            Finish!
+          </Button>
+        )}
       </div>
     </div>
   );
