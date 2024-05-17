@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, Dispatch, SetStateAction } from 'react';
+import { createContext, useContext, useState, Dispatch, SetStateAction, ReactNode } from 'react';
 import { TriviaParams } from "../interfaces/context-params";
 
 export interface TriviaContextType {
@@ -15,7 +15,11 @@ const GlobalContext = createContext<TriviaContextType>({
   setTriviaParams: () => []
 });
 
-export const GlobalContextProvider = ({ children }) => {
+export interface GlobalContextProviderProps {
+  children: ReactNode;
+}
+
+export const GlobalContextProvider = ({ children }: GlobalContextProviderProps) => {
   const [triviaParams, setTriviaParams] = useState(initialTriviaParams)
 
   return (
