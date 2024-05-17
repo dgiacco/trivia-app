@@ -1,6 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+
+import { modalTitle, modalText, modalCounter } from "@/app/styles/modal-styles";
 import Button from "./Button";
 
 interface ModalProps {
@@ -39,26 +41,26 @@ const Modal = ({ isFinalResult, count, totalQuestions }: ModalProps) => {
           <div className="bg-white p-6 sm:p-8">
             {isFinalResult ? (
               <>
-                <h1 className="font-serif text-xl md:text-2xl font-bold text-slate-700 mb-4">
+                <h1 className={modalTitle}>
                   {performanceRate === 100 ? "PERFECT!!!" : "Well played!"}
                 </h1>
-                <p className="font-serif md:text-lg text-slate-700 mb-4">
+                <p className={modalText}>
                   {finalMessage}
                 </p>
-                <p className="font-serif md:text-lg text-slate-700">
+                <p className={modalText}>
                   Your score is:
                 </p>
-                <h2 className="font-serif text-4xl md:text-5xl text-center font-bold text-slate-700 my-8">{count} / {totalQuestions}</h2>
+                <h2 className={modalCounter}>{count} / {totalQuestions}</h2>
               </>
             ) : (
               <>
-                <h1 className="font-serif text-xl font-bold text-slate-700 mb-4">
+                <h1 className={modalTitle}>
                   No Questions Available 😞
                 </h1>
-                <p className="font-serif text-slate-700">
+                <p className={modalText}>
                   There are no questions available for this combination.
                 </p>
-                <p className="font-serif text-slate-700 mb-4">
+                <p className={modalText}>
                   Please try another one.
                 </p>
               </>
