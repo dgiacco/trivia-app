@@ -25,6 +25,7 @@ const QuestionsPage = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [currentAnswers, setCurrentAnswers] = useState<string[]>([]);
+  const [counter, setCounter] = useState(0);
 
   const amount = triviaParams[0];
   const category = triviaParams[1];
@@ -42,7 +43,7 @@ const QuestionsPage = () => {
         questions[currentQuestionIndex].correct_answer,
       ]);
       setCurrentAnswers(shuffledAnswers);
-      setSelectedAnswer(null)
+      setSelectedAnswer(null);
     }
   }, [questions, currentQuestionIndex]);
 
@@ -65,11 +66,16 @@ const QuestionsPage = () => {
   };
 
   const moveToNextQuestion = () => {
+    if (selectedAnswer === questions[currentQuestionIndex].correct_answer) {
+      console.log("CORRECT");
+      setCounter(counter + 1);
+    }
     setCurrentQuestionIndex((currentQuestionIndex) => currentQuestionIndex + 1);
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <h1 className="text-white">hola{counter}</h1>
       <div className={questionClass}>
         <div key={currentQuestion.question}>
           {removeCharacters(currentQuestion.question)}
@@ -88,7 +94,9 @@ const QuestionsPage = () => {
         </div>
       </div>
       <div className="text-center">
-        <Button onClick={moveToNextQuestion} disabled={selectedAnswer === null}>Next question</Button>
+        <Button onClick={moveToNextQuestion} disabled={selectedAnswer === null}>
+          Next question
+        </Button>
       </div>
     </div>
   );
