@@ -22,7 +22,8 @@ const shuffleArray = (array: any[]) => {
 
 const QuestionsPage = () => {
   const { triviaParams } = useGlobalContext();
-  const { setSelectedAnswers, setCorrectAnswers } = useGlobalContext();
+  const { setSelectedAnswers, setCorrectAnswers, setAllQuestions } =
+    useGlobalContext();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [currentAnswers, setCurrentAnswers] = useState<string[]>([]);
@@ -86,8 +87,12 @@ const QuestionsPage = () => {
     const allCorrectAnswers = questions?.map((question) =>
       removeCharacters(question.correct_answer)
     );
-    if (allCorrectAnswers) {
+    const everyQuestion = questions?.map((question) =>
+      removeCharacters(question.question)
+    );
+    if (allCorrectAnswers && everyQuestion) {
       setCorrectAnswers(allCorrectAnswers);
+      setAllQuestions(everyQuestion);
     }
     setShowModal(true);
   };
