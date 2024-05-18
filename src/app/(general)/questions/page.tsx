@@ -90,10 +90,8 @@ const QuestionsPage = () => {
     const everyQuestion = questions?.map((question) =>
       removeCharacters(question.question)
     );
-    if (allCorrectAnswers && everyQuestion) {
-      setCorrectAnswers(allCorrectAnswers);
-      setAllQuestions(everyQuestion);
-    }
+    setCorrectAnswers(allCorrectAnswers);
+    setAllQuestions(everyQuestion);
     setShowModal(true);
   };
 

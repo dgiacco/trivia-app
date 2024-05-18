@@ -12,19 +12,19 @@ import { TriviaParams } from "../interfaces/context-params";
 
 export interface TriviaContextType {
   triviaParams: TriviaParams;
-  selectedAnswers: string[] | null;
-  correctAnswers: string[] | null;
-  allQuestions: string[] | null;
+  selectedAnswers: string[];
+  correctAnswers: string[];
+  allQuestions: string[];
   setTriviaParams: Dispatch<SetStateAction<TriviaParams>>;
-  setSelectedAnswers: Dispatch<SetStateAction<string[] | null>>;
-  setCorrectAnswers: Dispatch<SetStateAction<string[] | null>>;
-  setAllQuestions: Dispatch<SetStateAction<string[] | null>>;
+  setSelectedAnswers: Dispatch<SetStateAction<string[]>>;
+  setCorrectAnswers: Dispatch<SetStateAction<string[]>>;
+  setAllQuestions: Dispatch<SetStateAction<string[]>>;
 }
 
 const initialTriviaParams: TriviaParams = [10, 9, "easy"];
-const initialSelectedAnswers: string[] | null = null;
-const initialCorrectAnswers: string[] | null = null;
-const initialAllQuestions: string[] | null = null;
+const initialSelectedAnswers: string[] = [];
+const initialCorrectAnswers: string[] = [];
+const initialAllQuestions: string[] = [];
 
 const GlobalContext = createContext<TriviaContextType>({
   triviaParams: initialTriviaParams,
@@ -45,13 +45,13 @@ export const GlobalContextProvider = ({
   children,
 }: GlobalContextProviderProps) => {
   const [triviaParams, setTriviaParams] = useState(initialTriviaParams);
-  const [selectedAnswers, setSelectedAnswers] = useState<string[] | null>(
+  const [selectedAnswers, setSelectedAnswers] = useState<string[]>(
     initialSelectedAnswers
   );
-  const [correctAnswers, setCorrectAnswers] = useState<string[] | null>(
+  const [correctAnswers, setCorrectAnswers] = useState<string[]>(
     initialCorrectAnswers
   );
-  const [allQuestions, setAllQuestions] = useState<string[] | null>(
+  const [allQuestions, setAllQuestions] = useState<string[]>(
     initialAllQuestions
   );
 

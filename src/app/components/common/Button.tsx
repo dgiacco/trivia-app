@@ -12,7 +12,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const Button = ({ onClick, children, disabled, isReview, isArrow }: ButtonProps) => {
-  const buttonStyle = disabled ? `${buttonClass} bg-teal-600 opacity-50 cursor-not-allowed` : (isReview || isArrow)? `${buttonClass}  flex items-center bg-cyan-600 hover:bg-cyan-400` : `${buttonClass} bg-teal-600 hover:bg-teal-400`;
+  const buttonStyle = (disabled && !isArrow) ? `${buttonClass} bg-teal-600 opacity-50 cursor-not-allowed` : (disabled && isArrow) ? `${buttonClass} bg-cyan-600 opacity-50 cursor-not-allowed` : (isReview || isArrow)? `${buttonClass}  flex items-center bg-cyan-600 hover:bg-cyan-400` : `${buttonClass} bg-teal-600 hover:bg-teal-400`;
 
   return (
     <button className={buttonStyle} onClick={onClick} disabled={disabled}>{children} {isReview && <FaEye className='ml-2'/>}</button>
