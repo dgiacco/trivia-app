@@ -4,7 +4,7 @@ import { FaEye } from "react-icons/fa";
 import { buttonClass } from "@/app/styles/button-style";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  onClick: () => void | FormEventHandler<HTMLButtonElement>;
+  onClick?: () => void | FormEventHandler<HTMLButtonElement>;
   children: React.ReactNode;
   disabled?: boolean;
   isReview?: boolean;
