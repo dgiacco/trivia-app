@@ -31,8 +31,8 @@ const ReviewPage = () => {
 
   const reviewTitleText = removeCharacters("Let's review your performance!");
 
-  const correctAnswerStyle = `${reviewAnswer} text-green-500`;
-  const incorrectAnswerStyle = `${reviewAnswer} text-red-500`;
+  const correctAnswerStyle = `${reviewAnswer} text-green-400`;
+  const incorrectAnswerStyle = `${reviewAnswer} text-red-400`;
 
   return (
     <div className="container mx-auto py-6 text-white">
