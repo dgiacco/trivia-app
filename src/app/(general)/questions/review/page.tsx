@@ -12,6 +12,7 @@ import {
 } from "@/app/styles/review-page-styles";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
+import { removeCharacters } from "../../../../../util/FormatText";
 
 const ReviewPage = () => {
   const { selectedAnswers, correctAnswers, allQuestions } = useGlobalContext();
@@ -28,17 +29,27 @@ const ReviewPage = () => {
   const currentSelectedAnswer = selectedAnswers[questionIndex];
   const currentCorrectAnswer = correctAnswers[questionIndex];
 
-  const correctAnswerStyle = `${reviewAnswer} text-green-400`
-  const incorrectAnswerStyle = `${reviewAnswer} text-red-400`
+  const reviewTitleText = removeCharacters("Let's review your performance!");
+
+  const correctAnswerStyle = `${reviewAnswer} text-green-500`;
+  const incorrectAnswerStyle = `${reviewAnswer} text-red-500`;
 
   return (
     <div className="container mx-auto py-6 text-white">
-      <div className={reviewTitle}>Let's review your performance!</div>
+      <div className={reviewTitle}>{reviewTitleText}</div>
 
       <div className="max-w-md px-4 lg:px-0 mx-auto">
         <div className={reviewQuestion}>{currentQuestion}</div>
         <div className={reviewAnswer}>Your answer:</div>
-        <p className={currentSelectedAnswer === currentCorrectAnswer ? correctAnswerStyle : incorrectAnswerStyle}>{currentSelectedAnswer}</p>
+        <p
+          className={
+            currentSelectedAnswer === currentCorrectAnswer
+              ? correctAnswerStyle
+              : incorrectAnswerStyle
+          }
+        >
+          {currentSelectedAnswer}
+        </p>
         {currentSelectedAnswer !== currentCorrectAnswer ? (
           <div className="mt-3">
             <div className={reviewAnswer}>Correct answer:</div>
@@ -51,10 +62,18 @@ const ReviewPage = () => {
         )}
 
         <div className="flex justify-around mt-8">
-          <Button isArrow={true} onClick={previousQuestion} disabled={questionIndex === 0}>
+          <Button
+            isArrow={true}
+            onClick={previousQuestion}
+            disabled={questionIndex === 0}
+          >
             <HiOutlineArrowNarrowLeft />
           </Button>
-          <Button isArrow={true} onClick={nextQuestion} disabled={questionIndex === allQuestions.length - 1}>
+          <Button
+            isArrow={true}
+            onClick={nextQuestion}
+            disabled={questionIndex === allQuestions.length - 1}
+          >
             <HiOutlineArrowNarrowRight />
           </Button>
         </div>
