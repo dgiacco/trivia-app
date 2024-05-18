@@ -1,2 +1,2 @@
 export const titleClass =
-  "font-poetsenOne text-6xl pt-2 pb-8 sm:text-7xl md:text-8xl lg:text-9xl lg:pt-4 lg:pb-16 font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-teal-600"
+  "font-poetsenOne xs:text-5xl text-6xl pt-2 pb-8 sm:text-7xl md:text-8xl lg:text-9xl lg:pt-4 lg:pb-16 font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-teal-600"
