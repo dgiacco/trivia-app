@@ -1,33 +1,62 @@
-'use client'
+"use client";
 
-import { createContext, useContext, useState, Dispatch, SetStateAction, ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  Dispatch,
+  SetStateAction,
+  ReactNode,
+} from "react";
 import { TriviaParams } from "../interfaces/context-params";
 
 export interface TriviaContextType {
   triviaParams: TriviaParams;
-  setTriviaParams: Dispatch<SetStateAction<TriviaParams>>
+  selectedAnswers: string[] | null;
+  correctAnswers: string[] | null;
+  setTriviaParams: Dispatch<SetStateAction<TriviaParams>>;
+  setSelectedAnswers: Dispatch<SetStateAction<string[] | null>>;
+  setCorrectAnswers: Dispatch<SetStateAction<string[] | null>>;
 }
 
-const initialTriviaParams: TriviaParams = [10, 9, 'easy']
+const initialTriviaParams: TriviaParams = [10, 9, "easy"];
+const initialSelectedAnswers: string[] | null = null;
+const initialCorrectAnswers: string[] | null = null;
 
 const GlobalContext = createContext<TriviaContextType>({
   triviaParams: initialTriviaParams,
-  setTriviaParams: () => []
+  selectedAnswers: initialSelectedAnswers,
+  correctAnswers: initialCorrectAnswers,
+  setTriviaParams: () => [],
+  setSelectedAnswers: () => {},
+  setCorrectAnswers: () => {},
 });
 
 export interface GlobalContextProviderProps {
   children: ReactNode;
 }
 
-export const GlobalContextProvider = ({ children }: GlobalContextProviderProps) => {
-  const [triviaParams, setTriviaParams] = useState(initialTriviaParams)
+export const GlobalContextProvider = ({
+  children,
+}: GlobalContextProviderProps) => {
+  const [triviaParams, setTriviaParams] = useState(initialTriviaParams);
+  const [selectedAnswers, setSelectedAnswers] = useState<string[] | null>(initialSelectedAnswers);
+  const [correctAnswers, setCorrectAnswers] = useState<string[] | null>(initialCorrectAnswers);
 
   return (
-    <GlobalContext.Provider value={{ triviaParams, setTriviaParams }}>
+    <GlobalContext.Provider
+      value={{
+        triviaParams,
+        selectedAnswers,
+        correctAnswers,
+        setTriviaParams,
+        setSelectedAnswers,
+        setCorrectAnswers,
+      }}
+    >
       {children}
     </GlobalContext.Provider>
-  )
-}
+  );
+};
 
-export const useGlobalContext = () => useContext(GlobalContext)
-
+export const useGlobalContext = () => useContext(GlobalContext);

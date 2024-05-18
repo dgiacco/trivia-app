@@ -22,6 +22,7 @@ const shuffleArray = (array: any[]) => {
 
 const QuestionsPage = () => {
   const { triviaParams } = useGlobalContext();
+  const { setSelectedAnswers, setCorrectAnswers } = useGlobalContext();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [currentAnswers, setCurrentAnswers] = useState<string[]>([]);
@@ -55,7 +56,7 @@ const QuestionsPage = () => {
   if (questions === undefined || questions.length === 0) {
     return (
       <div>
-        <Modal  isFinalResult={false}/>
+        <Modal isFinalResult={false} />
       </div>
     );
   }
@@ -64,12 +65,15 @@ const QuestionsPage = () => {
 
   const handleAnswer = (answer: string) => {
     setSelectedAnswer(answer);
+    setSelectedAnswers((prevAnswers) => {
+      return [...(prevAnswers || []), removeCharacters(answer)];
+    });
   };
 
   const moveToNextQuestion = () => {
     if (selectedAnswer === questions[currentQuestionIndex].correct_answer) {
       setCounter(counter + 1);
-      console.log('correct')
+      console.log("correct");
     }
     setCurrentQuestionIndex((currentQuestionIndex) => currentQuestionIndex + 1);
   };
@@ -77,15 +81,20 @@ const QuestionsPage = () => {
   const finishGame = () => {
     if (selectedAnswer === questions[currentQuestionIndex].correct_answer) {
       setCounter(counter + 1);
-      console.log('correct')
+      console.log("correct");
     }
-    setShowModal(true)
-  }
+    const allCorrectAnswers = questions?.map((question) =>
+      removeCharacters(question.correct_answer)
+    );
+    if (allCorrectAnswers) {
+      setCorrectAnswers(allCorrectAnswers);
+    }
+    setShowModal(true);
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-white">
-      </h1>
+      <h1 className="text-white"></h1>
       <div className={questionClass}>
         <div key={currentQuestion.question}>
           {removeCharacters(currentQuestion.question)}
@@ -112,16 +121,17 @@ const QuestionsPage = () => {
             Next Question
           </Button>
         ) : (
-          <Button
-            onClick={finishGame}
-            disabled={selectedAnswer === null}
-          >
+          <Button onClick={finishGame} disabled={selectedAnswer === null}>
             Finish!
           </Button>
         )}
       </div>
-      { showModal && (
-        <Modal isFinalResult={true} count={counter} totalQuestions={questions.length}/>
+      {showModal && (
+        <Modal
+          isFinalResult={true}
+          count={counter}
+          totalQuestions={questions.length}
+        />
       )}
     </div>
   );
