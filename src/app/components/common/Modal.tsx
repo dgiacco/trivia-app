@@ -16,6 +16,9 @@ const Modal = ({ isFinalResult, count, totalQuestions }: ModalProps) => {
 
   const goToMenu = () => router.push("/menu");
 
+  const finalResultContainer = "p-4 md:p-6 flex justify-around"
+  const noQuestionsContainer = "p-4 md:p-6 flex justify-end"
+
   let performanceRate = null
 
   if(count != null && totalQuestions != null) {
@@ -37,8 +40,8 @@ const Modal = ({ isFinalResult, count, totalQuestions }: ModalProps) => {
   return (
     <>
       <div className="fixed inset-0 z-50 bg-black bg-opacity-50 overflow-y-auto flex items-center justify-center px-4">
-        <div className="bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:max-w-4/5 md:max-w-2xl">
-          <div className="bg-white p-6 sm:p-8">
+        <div className="bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all">
+          <div className="bg-white p-7 lg:p-10">
             {isFinalResult ? (
               <>
                 <h1 className={modalTitle}>
@@ -66,7 +69,9 @@ const Modal = ({ isFinalResult, count, totalQuestions }: ModalProps) => {
               </>
             )}
           </div>
-          <div className="p-4 md:p-6 flex justify-end">
+          <div className={isFinalResult? finalResultContainer : noQuestionsContainer}>
+            { isFinalResult && <Button onClick={goToMenu} isReview={true}>Review</Button>}
+            
             <Button onClick={goToMenu}>{isFinalResult ? "Play again!" : "Go back!"}</Button>
           </div>
         </div>
