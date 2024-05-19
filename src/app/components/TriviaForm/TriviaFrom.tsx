@@ -3,12 +3,13 @@
 import { useRef, useState, FormEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { IoWarning } from "react-icons/io5";
 
 import { TriviaCategory } from "../../interfaces/categories-response";
 import { difficulties } from "./constants";
 import { useGlobalContext } from "@/app/context/TriviaContext";
 import { TriviaParams } from "@/app/interfaces/context-params";
-import { formFieldClass, formLabelClass } from "@/app/styles/form-styles";
+import { formFieldClass, formLabelClass, maxQuestionsClass, errorFormFieldClass } from "@/app/styles/form-styles";
 import Loader from "../common/Loader";
 import Button from "@/app/components/common/Button";
 
@@ -73,11 +74,11 @@ const TriviaForm = () => {
             ref={questionsNumber}
             defaultValue={10}
             max={50}
-            className={formFieldClass}
+            className={!showMaxMessage ? formFieldClass : errorFormFieldClass}
             onChange={handleInputChange}
           ></input>
           {showMaxMessage && (
-            <div style={{ color: "red" }}>Max 50 questions</div>
+            <div className={maxQuestionsClass}><IoWarning className="mr-2"/>Max 50 questions</div>
           )}
         </div>
         <div>
