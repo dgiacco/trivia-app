@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, FormEvent } from "react";
+import { useRef, useState, FormEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
@@ -8,10 +8,7 @@ import { TriviaCategory } from "../../interfaces/categories-response";
 import { difficulties } from "./constants";
 import { useGlobalContext } from "@/app/context/TriviaContext";
 import { TriviaParams } from "@/app/interfaces/context-params";
-import {
-  formFieldClass,
-  formLabelClass,
-} from "@/app/styles/form-styles";
+import { formFieldClass, formLabelClass } from "@/app/styles/form-styles";
 import Loader from "../common/Loader";
 import Button from "@/app/components/common/Button";
 
@@ -25,6 +22,7 @@ const TriviaForm = () => {
   const questionsNumber = useRef<HTMLInputElement>(null);
   const selectedCategory = useRef<HTMLSelectElement>(null);
   const selectedDifficulty = useRef<HTMLSelectElement>(null);
+  const [showMaxMessage, setShowMaxMessage] = useState(false);
   const {
     data: formData,
     isLoading,
@@ -48,6 +46,15 @@ const TriviaForm = () => {
     router.push("/questions");
   };
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(event.target.value, 10);
+    if (value > 50) {
+      setShowMaxMessage(true);
+    } else {
+      setShowMaxMessage(false);
+    }
+  };
+
   if (isLoading) {
     return <Loader />;
   }
@@ -65,8 +72,13 @@ const TriviaForm = () => {
             name="amount"
             ref={questionsNumber}
             defaultValue={10}
+            max={50}
             className={formFieldClass}
+            onChange={handleInputChange}
           ></input>
+          {showMaxMessage && (
+            <div style={{ color: "red" }}>Max 50 questions</div>
+          )}
         </div>
         <div>
           <label htmlFor="category" className={formLabelClass}>
@@ -105,7 +117,7 @@ const TriviaForm = () => {
           </select>
         </div>
         <div className="pt-4 text-right">
-          <Button type="submit">Start!</Button>
+          <Button type="submit" disabled={showMaxMessage}>Start!</Button>
         </div>
       </form>
     </div>
