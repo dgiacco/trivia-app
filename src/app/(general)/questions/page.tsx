@@ -74,7 +74,6 @@ const QuestionsPage = () => {
   const moveToNextQuestion = () => {
     if (selectedAnswer === questions[currentQuestionIndex].correct_answer) {
       setCounter(counter + 1);
-      console.log("correct");
     }
     setCurrentQuestionIndex((currentQuestionIndex) => currentQuestionIndex + 1);
   };
@@ -82,7 +81,6 @@ const QuestionsPage = () => {
   const finishGame = () => {
     if (selectedAnswer === questions[currentQuestionIndex].correct_answer) {
       setCounter(counter + 1);
-      console.log("correct");
     }
     const allCorrectAnswers = questions?.map((question) =>
       removeCharacters(question.correct_answer)

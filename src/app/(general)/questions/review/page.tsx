@@ -15,14 +15,15 @@ import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 import { removeCharacters } from "../../../../../util/FormatText";
 
 const ReviewPage = () => {
-  const { selectedAnswers, correctAnswers, allQuestions, setSelectedAnswers } = useGlobalContext();
+  const { selectedAnswers, correctAnswers, allQuestions, setSelectedAnswers } =
+    useGlobalContext();
   const [questionIndex, setQuestionIndex] = useState(0);
 
   const router = useRouter();
 
   const goToMenu = () => {
-    setSelectedAnswers([])
-    router.push("/menu")
+    setSelectedAnswers([]);
+    router.push("/menu");
   };
 
   const nextQuestion = () => setQuestionIndex(questionIndex + 1);
@@ -66,14 +67,14 @@ const ReviewPage = () => {
 
         <div className="flex justify-around mt-8">
           <Button
-            isArrow={true}
+            variant="icon"
             onClick={previousQuestion}
             disabled={questionIndex === 0}
           >
             <HiOutlineArrowNarrowLeft />
           </Button>
           <Button
-            isArrow={true}
+            variant="icon"
             onClick={nextQuestion}
             disabled={questionIndex === allQuestions.length - 1}
           >
