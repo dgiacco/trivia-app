@@ -32,8 +32,6 @@ const ReviewPage = () => {
   const currentSelectedAnswer = selectedAnswers[questionIndex];
   const currentCorrectAnswer = correctAnswers[questionIndex];
 
-  console.log(selectedAnswers, correctAnswers, allQuestions)
-
   const reviewTitleText = removeCharacters("Let's review your performance!");
 
   const correctAnswerStyle = `${reviewAnswer} text-green-400`;

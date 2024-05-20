@@ -35,7 +35,7 @@ const QuestionsPage = () => {
   const difficulty = triviaParams[2];
 
   const { data: questions, isLoading } = useQuery({
-    queryKey: ["questions"],
+    queryKey: ["questions", amount, category, difficulty],
     queryFn: () => getQuestions({ amount, category, difficulty }),
   });
 
