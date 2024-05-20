@@ -15,12 +15,15 @@ import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 import { removeCharacters } from "../../../../../util/FormatText";
 
 const ReviewPage = () => {
-  const { selectedAnswers, correctAnswers, allQuestions } = useGlobalContext();
+  const { selectedAnswers, correctAnswers, allQuestions, setSelectedAnswers } = useGlobalContext();
   const [questionIndex, setQuestionIndex] = useState(0);
 
   const router = useRouter();
 
-  const goToMenu = () => router.push("/menu");
+  const goToMenu = () => {
+    setSelectedAnswers([])
+    router.push("/menu")
+  };
 
   const nextQuestion = () => setQuestionIndex(questionIndex + 1);
   const previousQuestion = () => setQuestionIndex(questionIndex - 1);
@@ -28,6 +31,8 @@ const ReviewPage = () => {
   const currentQuestion = allQuestions[questionIndex];
   const currentSelectedAnswer = selectedAnswers[questionIndex];
   const currentCorrectAnswer = correctAnswers[questionIndex];
+
+  console.log(selectedAnswers, correctAnswers, allQuestions)
 
   const reviewTitleText = removeCharacters("Let's review your performance!");
 

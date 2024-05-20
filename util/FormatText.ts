@@ -19,4 +19,5 @@ export function removeCharacters(question: string) {
     .replace(/&Uacute;/g, "Ú")
     .replace(/&uacute;/g, "ú")
     .replace(/&Uuml;/g, "Ü")
+    .replace(/&Delta;/g, "Δ")
 }
