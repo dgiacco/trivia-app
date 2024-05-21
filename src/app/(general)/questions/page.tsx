@@ -11,6 +11,7 @@ import Modal from "../../components/common/Modal";
 import Button from "@/app/components/common/Button";
 import AnswerContainer from "@/app/components/Questions/AnswerContainer";
 import { removeCharacters } from "../../../../util/FormatText";
+import "@/styles/animations.css";
 
 const shuffleArray = (array: any[]) => {
   for (let i = array.length - 1; i > 0; i--) {
@@ -27,6 +28,7 @@ const QuestionsPage = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [currentAnswers, setCurrentAnswers] = useState<string[]>([]);
+  const [visibleAnswers, setVisibleAnswers] = useState<string[]>([]);
   const [counter, setCounter] = useState(0);
   const [showModal, setShowModal] = useState(false);
 
@@ -45,8 +47,16 @@ const QuestionsPage = () => {
         ...questions[currentQuestionIndex].incorrect_answers,
         questions[currentQuestionIndex].correct_answer,
       ]);
+  
       setCurrentAnswers(shuffledAnswers);
       setSelectedAnswer(null);
+      setVisibleAnswers([]); // Reset visible answers
+  
+      shuffledAnswers.forEach((answer, index) => {
+        setTimeout(() => {
+          setVisibleAnswers((prev) => [...prev, answer]);
+        }, index * 500); // Adjust the delay as needed
+      });
     }
   }, [questions, currentQuestionIndex]);
 
@@ -103,13 +113,14 @@ const QuestionsPage = () => {
       </div>
       <div className="mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {currentAnswers.map((answer) => (
-            <AnswerContainer
-              key={answer}
+          {visibleAnswers.map((answer) => (
+            <div key={answer} className="answer-enter">
+              <AnswerContainer
               answer={answer}
               onClick={handleAnswer}
               selected={selectedAnswer === answer}
             />
+            </div>
           ))}
         </div>
       </div>

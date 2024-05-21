@@ -28,7 +28,6 @@ const Button = ({ onClick, children, disabled, variant = "primary" }: ButtonProp
       break
   }
 
-  console.log(buttonStyle)
   return (
     <button className={buttonStyle} onClick={onClick} disabled={disabled}>
       {children} {variant === "secondary" && <FaEye className="ml-2" />}

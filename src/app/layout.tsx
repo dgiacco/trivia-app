@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import "./globals.css";
 import localFont from "next/font/local"
 
+import "./globals.css";
+import "../styles/animations.css"
 import Provider from "../../util/Providers";
 import { GlobalContextProvider } from "./context/TriviaContext";
 import { titleClass } from "./styles/title-style";
