@@ -53,7 +53,7 @@ const QuestionsPage = () => {
       shuffledAnswers.forEach((answer, index) => {
         setTimeout(() => {
           setVisibleAnswers((prev) => [...prev, answer]);
-        }, index * 500);
+        }, index * 400);
       });
     }
   }, [questions, currentQuestionIndex]);
@@ -119,7 +119,7 @@ const QuestionsPage = () => {
               <AnswerContainer
               answer={answer}
               onClick={() => handleAnswer(answer)}
-              selected={selectedAnswer === answer}
+              selected={clickedAnswer === answer}
             />
             </div>
           ))}
