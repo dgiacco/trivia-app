@@ -113,17 +113,28 @@ const QuestionsPage = () => {
         </div>
       </div>
       <div className="mb-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {visibleAnswers.map((answer) => (
-            <div key={answer} className="answer-enter">
-              <AnswerContainer
-              answer={answer}
-              onClick={() => handleAnswer(answer)}
-              selected={clickedAnswer === answer}
-            />
-            </div>
-          ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  {Array.from({ length: 4 }).map((_, index) => (
+    <div key={index} className={visibleAnswers[index] ? 'answer-enter' : ''}>
+      {visibleAnswers[index] ? (
+        <AnswerContainer
+          answer={visibleAnswers[index]}
+          onClick={() => handleAnswer(visibleAnswers[index])}
+          selected={clickedAnswer === visibleAnswers[index]}
+        />
+      ) : (
+        <div className="invisible">
+          <AnswerContainer
+            answer="placeholder"
+            onClick={() => {}}
+            selected={false}
+          />
         </div>
+      )}
+    </div>
+  ))}
+</div>
+
       </div>
       <div className="text-center">
         {questions.length > currentQuestionIndex + 1 ? (
