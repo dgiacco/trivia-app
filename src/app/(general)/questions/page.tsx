@@ -27,8 +27,8 @@ const QuestionsPage = () => {
     useGlobalContext();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-  const [currentAnswers, setCurrentAnswers] = useState<string[]>([]);
   const [visibleAnswers, setVisibleAnswers] = useState<string[]>([]);
+  const [clickedAnswer, setClickedAnswer] = useState<string | null>(null);
   const [counter, setCounter] = useState(0);
   const [showModal, setShowModal] = useState(false);
 
@@ -48,14 +48,12 @@ const QuestionsPage = () => {
         questions[currentQuestionIndex].correct_answer,
       ]);
   
-      setCurrentAnswers(shuffledAnswers);
-      setSelectedAnswer(null);
-      setVisibleAnswers([]); // Reset visible answers
+      setVisibleAnswers([]);
   
       shuffledAnswers.forEach((answer, index) => {
         setTimeout(() => {
           setVisibleAnswers((prev) => [...prev, answer]);
-        }, index * 500); // Adjust the delay as needed
+        }, index * 500);
       });
     }
   }, [questions, currentQuestionIndex]);
@@ -75,33 +73,36 @@ const QuestionsPage = () => {
   const currentQuestion = questions[currentQuestionIndex];
 
   const handleAnswer = (answer: string) => {
-    setSelectedAnswer(answer);
-    setSelectedAnswers((prevAnswers) => {
-      return [...(prevAnswers || []), removeCharacters(answer)];
-    });
+    setClickedAnswer(answer);
   };
 
   const moveToNextQuestion = () => {
-    if (selectedAnswer === questions[currentQuestionIndex].correct_answer) {
-      setCounter(counter + 1);
+    if (clickedAnswer !== null) {
+      if (clickedAnswer === questions[currentQuestionIndex].correct_answer) {
+        setCounter((prevCounter) => prevCounter + 1);
+      }
+      setSelectedAnswers((prevAnswers) => [...(prevAnswers || []), removeCharacters(clickedAnswer)]);
+      setSelectedAnswer(clickedAnswer);
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+      setClickedAnswer(null);
     }
-    setCurrentQuestionIndex((currentQuestionIndex) => currentQuestionIndex + 1);
-  };
+  };  
 
   const finishGame = () => {
-    if (selectedAnswer === questions[currentQuestionIndex].correct_answer) {
-      setCounter(counter + 1);
+    if (clickedAnswer !== null) {
+      if (clickedAnswer === questions[currentQuestionIndex].correct_answer) {
+        setCounter((prevCounter) => prevCounter + 1);
+      }
+      setSelectedAnswers((prevAnswers) => [...(prevAnswers || []), removeCharacters(clickedAnswer)]);
+      setSelectedAnswer(clickedAnswer);
+      const allCorrectAnswers = questions.map((question) => removeCharacters(question.correct_answer));
+      const everyQuestion = questions.map((question) => removeCharacters(question.question));
+      setCorrectAnswers(allCorrectAnswers);
+      setAllQuestions(everyQuestion);
+      setShowModal(true);
     }
-    const allCorrectAnswers = questions?.map((question) =>
-      removeCharacters(question.correct_answer)
-    );
-    const everyQuestion = questions?.map((question) =>
-      removeCharacters(question.question)
-    );
-    setCorrectAnswers(allCorrectAnswers);
-    setAllQuestions(everyQuestion);
-    setShowModal(true);
   };
+  
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -117,7 +118,7 @@ const QuestionsPage = () => {
             <div key={answer} className="answer-enter">
               <AnswerContainer
               answer={answer}
-              onClick={handleAnswer}
+              onClick={() => handleAnswer(answer)}
               selected={selectedAnswer === answer}
             />
             </div>
@@ -128,12 +129,12 @@ const QuestionsPage = () => {
         {questions.length > currentQuestionIndex + 1 ? (
           <Button
             onClick={moveToNextQuestion}
-            disabled={selectedAnswer === null}
+            disabled={clickedAnswer === null}
           >
             Next Question
           </Button>
         ) : (
-          <Button onClick={finishGame} disabled={selectedAnswer === null}>
+          <Button onClick={finishGame} disabled={clickedAnswer === null}>
             Finish!
           </Button>
         )}
