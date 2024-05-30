@@ -109,7 +109,7 @@ const QuestionsPage = () => {
       <h1 className="text-white"></h1>
       <div className={questionClass}>
         <div key={currentQuestion.question}>
-          {removeCharacters(currentQuestion.question)}
+          { currentQuestionIndex + 1 }) {removeCharacters(currentQuestion.question)}
         </div>
       </div>
       <div className="mb-8">
