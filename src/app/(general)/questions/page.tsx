@@ -47,9 +47,9 @@ const QuestionsPage = () => {
         ...questions[currentQuestionIndex].incorrect_answers,
         questions[currentQuestionIndex].correct_answer,
       ]);
-  
+
       setVisibleAnswers([]);
-  
+
       shuffledAnswers.forEach((answer, index) => {
         setTimeout(() => {
           setVisibleAnswers((prev) => [...prev, answer]);
@@ -81,60 +81,70 @@ const QuestionsPage = () => {
       if (clickedAnswer === questions[currentQuestionIndex].correct_answer) {
         setCounter((prevCounter) => prevCounter + 1);
       }
-      setSelectedAnswers((prevAnswers) => [...(prevAnswers || []), removeCharacters(clickedAnswer)]);
+      setSelectedAnswers((prevAnswers) => [
+        ...(prevAnswers || []),
+        removeCharacters(clickedAnswer),
+      ]);
       setSelectedAnswer(clickedAnswer);
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
       setClickedAnswer(null);
     }
-  };  
+  };
 
   const finishGame = () => {
     if (clickedAnswer !== null) {
       if (clickedAnswer === questions[currentQuestionIndex].correct_answer) {
         setCounter((prevCounter) => prevCounter + 1);
       }
-      setSelectedAnswers((prevAnswers) => [...(prevAnswers || []), removeCharacters(clickedAnswer)]);
+      setSelectedAnswers((prevAnswers) => [
+        ...(prevAnswers || []),
+        removeCharacters(clickedAnswer),
+      ]);
       setSelectedAnswer(clickedAnswer);
-      const allCorrectAnswers = questions.map((question) => removeCharacters(question.correct_answer));
-      const everyQuestion = questions.map((question) => removeCharacters(question.question));
+      const allCorrectAnswers = questions.map((question) =>
+        removeCharacters(question.correct_answer)
+      );
+      const everyQuestion = questions.map((question) =>
+        removeCharacters(question.question)
+      );
       setCorrectAnswers(allCorrectAnswers);
       setAllQuestions(everyQuestion);
       setShowModal(true);
     }
   };
-  
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-white"></h1>
       <div className={questionClass}>
         <div key={currentQuestion.question}>
-          { currentQuestionIndex + 1 }) {removeCharacters(currentQuestion.question)}
+          {currentQuestionIndex + 1}) {removeCharacters(currentQuestion.question)}
         </div>
       </div>
       <div className="mb-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-  {Array.from({ length: 4 }).map((_, index) => (
-    <div key={index} className={visibleAnswers[index] ? 'answer-enter' : ''}>
-      {visibleAnswers[index] ? (
-        <AnswerContainer
-          answer={visibleAnswers[index]}
-          onClick={() => handleAnswer(visibleAnswers[index])}
-          selected={clickedAnswer === visibleAnswers[index]}
-        />
-      ) : (
-        <div className="invisible">
-          <AnswerContainer
-            answer="placeholder"
-            onClick={() => {}}
-            selected={false}
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div
+              key={`${currentQuestionIndex}-${index}`}
+              className={visibleAnswers[index] ? "answer-enter" : ""}
+            >
+              {visibleAnswers[index] ? (
+                <AnswerContainer
+                  answer={visibleAnswers[index]}
+                  onClick={() => handleAnswer(visibleAnswers[index])}
+                  selected={clickedAnswer === visibleAnswers[index]}
+                />
+              ) : (
+                <div className="invisible">
+                  <AnswerContainer
+                    answer="placeholder"
+                    onClick={() => {}}
+                    selected={false}
+                  />
+                </div>
+              )}
+            </div>
+          ))}
         </div>
-      )}
-    </div>
-  ))}
-</div>
-
       </div>
       <div className="text-center">
         {questions.length > currentQuestionIndex + 1 ? (
